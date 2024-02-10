@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         VMN - Twitch Settings
+// @name         VNM Twitch Settings
 // @namespace    http://tampermonkey.net/
-// @version      0.2
-// @description  Settings-Windows from VMN
+// @version      0.3
+// @description  Settings-Window from VMN
 // @author       Pillowg1rl
 // @match        https://www.twitch.tv/*
 // @match        http://www.twitch.tv/*
@@ -18,6 +18,7 @@
     var classNameToApplyCSS = 'Layout-sc-1xcs6mc-0.bplHXs';
     var styleElement;
     var enabled = localStorage.getItem('streamStreakEnabled') === 'true';
+    var challengesAndPredictionsEnabled = localStorage.getItem('challengesAndPredictionsEnabled') === 'true';
     var height = parseInt(localStorage.getItem('channelpointsHeight')) || 300;
 
     // Function to toggle the CSS
@@ -34,13 +35,29 @@
         updateToggleSwitch();
     }
 
-    // Function to apply the CSS
-    function applyCSS() {
-        // Define the CSS styles you want to apply
+    // Function to toggle the CSS for challenges and predictions
+    function toggleChallengesAndPredictionsCSS() {
+        challengesAndPredictionsEnabled = !challengesAndPredictionsEnabled;
+        localStorage.setItem('challengesAndPredictionsEnabled', challengesAndPredictionsEnabled);
+        if (challengesAndPredictionsEnabled) {
+            // Apply CSS for challenges and predictions removal if enabled
+            applyChallengesAndPredictionsCSS();
+        } else {
+            // Remove CSS for challenges and predictions if disabled
+            removeChallengesAndPredictionsCSS();
+        }
+        updateChallengesAndPredictionsToggleSwitch();
+    }
+
+    // Function to apply the CSS for challenges and predictions removal
+    function applyChallengesAndPredictionsCSS() {
+        // Define the CSS styles you want to apply for challenges and predictions removal
         var cssStyles = `
             /* Add your CSS styles here */
-            .${classNameToApplyCSS} {
-                display: none !important; /* For example: Hide the element */
+            .Layout-sc-1xcs6mc-0.esGgHZ,
+            .Layout-sc-1xcs6mc-0.jPmKIH,
+            .Layout-sc-1xcs6mc-0.jPmKIH {
+                display: none !important;
             }
         `;
 
@@ -54,15 +71,45 @@
         document.head.appendChild(styleElement);
     }
 
-    // Function to remove the CSS
-    function removeCSS() {
+    // Function to remove the CSS for challenges and predictions removal
+    function removeChallengesAndPredictionsCSS() {
         if (styleElement) {
             styleElement.remove(); // Remove the style element if it exists
             styleElement = null; // Reset styleElement
         }
     }
 
-    // Function to create and append the toggle button
+    // Function to create and append the toggle button for challenges and predictions
+    function createChallengesAndPredictionsToggleButton() {
+        var button = document.createElement('button');
+        button.textContent = 'Herausforderungen und Vorhersagen entfernen';
+        button.style.position = 'fixed';
+        button.style.bottom = '60px'; // Adjusted bottom position
+        button.style.right = '100px'; // Adjusted right position
+        button.style.zIndex = '9999'; // Ensure the button is above other elements
+        button.style.backgroundColor = '#9147ff'; // Purple background color
+        button.style.color = '#FFFFFF'; // White text color
+        button.style.padding = '10px 20px'; // Padding
+        button.style.border = 'none'; // Remove border
+        button.style.borderRadius = '4px'; // Add border radius
+        button.style.cursor = 'pointer'; // Change cursor to pointer
+        button.addEventListener('click', toggleChallengesAndPredictionsCSS);
+        document.body.appendChild(button);
+    }
+
+    // Function to update the toggle switch for challenges and predictions appearance
+    function updateChallengesAndPredictionsToggleSwitch() {
+        var toggleSwitch = document.getElementById('challengesAndPredictionsToggleSwitch');
+        if (toggleSwitch) {
+            if (challengesAndPredictionsEnabled) {
+                toggleSwitch.style.backgroundColor = '#4CAF50'; // Green color
+            } else {
+                toggleSwitch.style.backgroundColor = '#FF5733'; // Red color
+            }
+        }
+    }
+
+    // Function to create and append the toggle button for stream streak removal
     function createToggleButton() {
         var button = document.createElement('button');
         button.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>`;
@@ -84,7 +131,7 @@
         document.body.appendChild(button);
     }
 
-    // Function to update the toggle switch appearance
+    // Function to update the toggle switch for stream streak removal appearance
     function updateToggleSwitch() {
         var toggleSwitch = document.getElementById('toggleSwitch');
         if (toggleSwitch) {
@@ -161,6 +208,28 @@
         toggleSwitchContainer.appendChild(toggleLabel);
         toggleSwitchContainer.appendChild(toggleSwitch);
 
+        var challengesAndPredictionsToggleSwitchContainer = document.createElement('div');
+        challengesAndPredictionsToggleSwitchContainer.className = 'row';
+
+        var challengesAndPredictionsToggleLabel = document.createElement('span');
+        challengesAndPredictionsToggleLabel.className = 'label';
+        challengesAndPredictionsToggleLabel.textContent = 'Herausforderungen und Vorhersagen entfernen';
+        challengesAndPredictionsToggleLabel.style.marginRight = '10px'; // Added margin between text and element
+
+        var challengesAndPredictionsToggleSwitch = document.createElement('label');
+        challengesAndPredictionsToggleSwitch.className = 'switch';
+        var challengesAndPredictionsToggleInput = document.createElement('input');
+        challengesAndPredictionsToggleInput.type = 'checkbox';
+        challengesAndPredictionsToggleInput.checked = challengesAndPredictionsEnabled;
+        challengesAndPredictionsToggleInput.addEventListener('change', toggleChallengesAndPredictionsCSS);
+        var challengesAndPredictionsToggleSpan = document.createElement('span');
+        challengesAndPredictionsToggleSpan.className = 'slider round';
+        challengesAndPredictionsToggleSwitch.appendChild(challengesAndPredictionsToggleInput);
+        challengesAndPredictionsToggleSwitch.appendChild(challengesAndPredictionsToggleSpan);
+
+        challengesAndPredictionsToggleSwitchContainer.appendChild(challengesAndPredictionsToggleLabel);
+        challengesAndPredictionsToggleSwitchContainer.appendChild(challengesAndPredictionsToggleSwitch);
+
         var heightContainer = document.createElement('div');
         heightContainer.className = 'row';
 
@@ -185,6 +254,7 @@
         heightContainer.appendChild(heightInput);
 
         settingsWindow.appendChild(toggleSwitchContainer);
+        settingsWindow.appendChild(challengesAndPredictionsToggleSwitchContainer);
         settingsWindow.appendChild(heightContainer);
 
         document.body.appendChild(settingsWindow);
@@ -211,8 +281,12 @@
 
     window.addEventListener('load', function() {
         createToggleButton();
+        createChallengesAndPredictionsToggleButton();
         if (enabled) {
             applyCSS();
+        }
+        if (challengesAndPredictionsEnabled) {
+            applyChallengesAndPredictionsCSS();
         }
         applyHeightCSS();
     });
