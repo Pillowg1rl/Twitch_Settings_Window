@@ -6,4 +6,5 @@
 
 <h3>How to install:</h3>
 Tampermonkey Installieren: https://www.tampermonkey.net/
+
 Script Installieren: https://github.com/Pillowg1rl/Twitch_Settings_Window/raw/main/Script.user.js
