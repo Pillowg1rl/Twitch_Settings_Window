@@ -16,85 +16,100 @@
     'use strict';
 
     // Define the class name of the elements you want to apply CSS to
-    var classNameToApplyCSS = 'Layout-sc-1xcs6mc-0.bplHXs';
-    var styleElement;
-    var enabled = localStorage.getItem('streamStreakEnabled') === 'true';
-    var challengesAndPredictionsEnabled = localStorage.getItem('challengesAndPredictionsEnabled') === 'true';
+    var classNameToApplyStreamStreakCSS = 'Layout-sc-1xcs6mc-0.bplHXs';
+    var classNameToApplyChallengesPredictionsCSS = 'Layout-sc-1xcs6mc-0.jPmKIH,.Layout-sc-1xcs6mc-0.esGgHZ';
+    var styleElementStreamStreak;
+    var styleElementChallengesPredictions;
+    var streamStreakEnabled = localStorage.getItem('streamStreakEnabled') === 'true';
+    var challengesPredictionsEnabled = localStorage.getItem('challengesPredictionsEnabled') === 'true';
     var height = parseInt(localStorage.getItem('channelpointsHeight')) || 300;
+    var settingsWindowOpened = false;
 
-    // Function to toggle the CSS
-    function toggleCSS() {
-        enabled = !enabled;
-        localStorage.setItem('streamStreakEnabled', enabled);
-        if (enabled) {
+    // Function to toggle the Stream Streak CSS
+    function toggleStreamStreakCSS() {
+        streamStreakEnabled = !streamStreakEnabled;
+        localStorage.setItem('streamStreakEnabled', streamStreakEnabled);
+        if (streamStreakEnabled) {
             // Apply CSS if enabled
-            applyCSS();
+            applyStreamStreakCSS();
         } else {
             // Remove CSS if disabled
-            removeCSS();
+            removeStreamStreakCSS();
         }
         updateToggleSwitch();
     }
 
-    // Function to toggle the CSS for challenges and predictions
-    function toggleChallengesAndPredictionsCSS() {
-        challengesAndPredictionsEnabled = !challengesAndPredictionsEnabled;
-        localStorage.setItem('challengesAndPredictionsEnabled', challengesAndPredictionsEnabled);
-        if (challengesAndPredictionsEnabled) {
-            // Apply CSS for challenges and predictions removal if enabled
-            applyChallengesAndPredictionsCSS();
-        } else {
-            // Remove CSS for challenges and predictions if disabled
-            removeChallengesAndPredictionsCSS();
-        }
-        updateChallengesAndPredictionsToggleSwitch();
-    }
-
-    // Function to apply the CSS for challenges and predictions removal
-    function applyChallengesAndPredictionsCSS() {
-        // Define the CSS styles you want to apply for challenges and predictions removal
+    // Function to apply the Stream Streak CSS
+    function applyStreamStreakCSS() {
+        // Define the CSS styles you want to apply
         var cssStyles = `
             /* Add your CSS styles here */
-            .Layout-sc-1xcs6mc-0.esGgHZ,
-            .Layout-sc-1xcs6mc-0.jPmKIH,
-            .Layout-sc-1xcs6mc-0.jPmKIH {
-                display: none !important;
+            .${classNameToApplyStreamStreakCSS} {
+                display: none !important; /* For example: Hide the element */
             }
         `;
 
         // Create a <style> element
-        styleElement = document.createElement('style');
+        styleElementStreamStreak = document.createElement('style');
 
         // Set the CSS text
-        styleElement.textContent = cssStyles;
+        styleElementStreamStreak.textContent = cssStyles;
 
         // Append the <style> element to the <head>
-        document.head.appendChild(styleElement);
+        document.head.appendChild(styleElementStreamStreak);
     }
 
-    // Function to remove the CSS for challenges and predictions removal
-    function removeChallengesAndPredictionsCSS() {
-        if (styleElement) {
-            styleElement.remove(); // Remove the style element if it exists
-            styleElement = null; // Reset styleElement
+    // Function to remove the Stream Streak CSS
+    function removeStreamStreakCSS() {
+        if (styleElementStreamStreak) {
+            styleElementStreamStreak.remove(); // Remove the style element if it exists
+            styleElementStreamStreak = null; // Reset styleElement
         }
     }
 
+    // Function to toggle the Challenges and Predictions CSS
+    function toggleChallengesPredictionsCSS() {
+        challengesPredictionsEnabled = !challengesPredictionsEnabled;
+        localStorage.setItem('challengesPredictionsEnabled', challengesPredictionsEnabled);
+        if (challengesPredictionsEnabled) {
+            // Apply CSS if enabled
+            applyChallengesPredictionsCSS();
+        } else {
+            // Remove CSS if disabled
+            removeChallengesPredictionsCSS();
+        }
+        updateToggleSwitch();
+    }
 
-
-    // Function to update the toggle switch for challenges and predictions appearance
-    function updateChallengesAndPredictionsToggleSwitch() {
-        var toggleSwitch = document.getElementById('challengesAndPredictionsToggleSwitch');
-        if (toggleSwitch) {
-            if (challengesAndPredictionsEnabled) {
-                toggleSwitch.style.backgroundColor = '#4CAF50'; // Green color
-            } else {
-                toggleSwitch.style.backgroundColor = '#FF5733'; // Red color
+    // Function to apply the Challenges and Predictions CSS
+    function applyChallengesPredictionsCSS() {
+        // Define the CSS styles you want to apply
+        var cssStyles = `
+            /* Add your CSS styles here */
+            .${classNameToApplyChallengesPredictionsCSS} {
+                display: none !important; /* For example: Hide the element */
             }
+        `;
+
+        // Create a <style> element
+        styleElementChallengesPredictions = document.createElement('style');
+
+        // Set the CSS text
+        styleElementChallengesPredictions.textContent = cssStyles;
+
+        // Append the <style> element to the <head>
+        document.head.appendChild(styleElementChallengesPredictions);
+    }
+
+    // Function to remove the Challenges and Predictions CSS
+    function removeChallengesPredictionsCSS() {
+        if (styleElementChallengesPredictions) {
+            styleElementChallengesPredictions.remove(); // Remove the style element if it exists
+            styleElementChallengesPredictions = null; // Reset styleElement
         }
     }
 
-    // Function to create and append the toggle button for stream streak removal
+    // Function to create and append the toggle button
     function createToggleButton() {
         var button = document.createElement('button');
         button.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>`;
@@ -116,34 +131,26 @@
         document.body.appendChild(button);
     }
 
-    // Function to update the toggle switch for stream streak removal appearance
-    function updateToggleSwitch() {
-        var toggleSwitch = document.getElementById('toggleSwitch');
-        if (toggleSwitch) {
-            if (enabled) {
-                toggleSwitch.style.backgroundColor = '#4CAF50'; // Green color
-            } else {
-                toggleSwitch.style.backgroundColor = '#FF5733'; // Red color
-            }
-        }
-    }
+// Define settingsWindow globally
+var settingsWindow;
 
-    // Function to open or close the settings window
-    function toggleSettingsWindow() {
-        var settingsWindow = document.getElementById('settingsWindow');
-        if (settingsWindow) {
-            document.body.removeChild(settingsWindow);
-        } else {
-            openSettingsWindow();
-        }
+// Function to toggle the settings window
+function toggleSettingsWindow() {
+    if (settingsWindowOpened) {
+        document.body.removeChild(settingsWindow);
+        settingsWindowOpened = false;
+    } else {
+        openSettingsWindow();
+        settingsWindowOpened = true;
     }
+}
 
     // Function to open the settings window
     function openSettingsWindow() {
-        var settingsWindow = document.createElement('div');
-        settingsWindow.id = 'settingsWindow';
+        if (settingsWindowOpened) return; // If window is already open, return
+        settingsWindow = document.createElement('div');
         settingsWindow.style.position = 'fixed';
-        settingsWindow.style.bottom = '40px'; // Adjusted bottom position
+        settingsWindow.style.bottom = '60px'; // Adjusted bottom position
         settingsWindow.style.right = '20px';
         settingsWindow.style.backgroundColor = '#2e2e2e'; // Dark background color
         settingsWindow.style.padding = '30px'; // Increased padding
@@ -168,52 +175,53 @@
         closeButton.style.cursor = 'pointer';
         closeButton.addEventListener('click', function() {
             document.body.removeChild(settingsWindow);
+            settingsWindowOpened = false;
         });
         settingsWindow.appendChild(closeButton);
 
-        var toggleSwitchContainer = document.createElement('div');
-        toggleSwitchContainer.className = 'row';
+        var streamStreakToggleSwitchContainer = document.createElement('div');
+        streamStreakToggleSwitchContainer.className = 'row';
 
-        var toggleLabel = document.createElement('span');
-        toggleLabel.className = 'label';
-        toggleLabel.textContent = 'Streak Removal';
-        toggleLabel.style.marginRight = '10px'; // Added margin between text and element
+        var streamStreakToggleLabel = document.createElement('span');
+        streamStreakToggleLabel.className = 'label';
+        streamStreakToggleLabel.textContent = 'Stream Streak Removal';
+        streamStreakToggleLabel.style.marginRight = '10px'; // Added margin between text and element
 
-        var toggleSwitch = document.createElement('label');
-        toggleSwitch.className = 'switch';
-        var toggleInput = document.createElement('input');
-        toggleInput.type = 'checkbox';
-        toggleInput.checked = enabled;
-        toggleInput.addEventListener('change', toggleCSS);
-        var toggleSpan = document.createElement('span');
-        toggleSpan.className = 'slider round';
-        toggleSwitch.appendChild(toggleInput);
-        toggleSwitch.appendChild(toggleSpan);
+        var streamStreakToggleSwitch = document.createElement('label');
+        streamStreakToggleSwitch.className = 'switch';
+        var streamStreakToggleInput = document.createElement('input');
+        streamStreakToggleInput.type = 'checkbox';
+        streamStreakToggleInput.checked = streamStreakEnabled;
+        streamStreakToggleInput.addEventListener('change', toggleStreamStreakCSS);
+        var streamStreakToggleSpan = document.createElement('span');
+        streamStreakToggleSpan.className = 'slider round';
+        streamStreakToggleSwitch.appendChild(streamStreakToggleInput);
+        streamStreakToggleSwitch.appendChild(streamStreakToggleSpan);
 
-        toggleSwitchContainer.appendChild(toggleLabel);
-        toggleSwitchContainer.appendChild(toggleSwitch);
+        streamStreakToggleSwitchContainer.appendChild(streamStreakToggleLabel);
+        streamStreakToggleSwitchContainer.appendChild(streamStreakToggleSwitch);
 
-        var challengesAndPredictionsToggleSwitchContainer = document.createElement('div');
-        challengesAndPredictionsToggleSwitchContainer.className = 'row';
+        var challengesPredictionsToggleSwitchContainer = document.createElement('div');
+        challengesPredictionsToggleSwitchContainer.className = 'row';
 
-        var challengesAndPredictionsToggleLabel = document.createElement('span');
-        challengesAndPredictionsToggleLabel.className = 'label';
-        challengesAndPredictionsToggleLabel.textContent = 'Herausforderungen und Vorhersagen entfernen';
-        challengesAndPredictionsToggleLabel.style.marginRight = '10px'; // Added margin between text and element
+        var challengesPredictionsToggleLabel = document.createElement('span');
+        challengesPredictionsToggleLabel.className = 'label';
+        challengesPredictionsToggleLabel.textContent = 'Challenges and Predictions Removal';
+        challengesPredictionsToggleLabel.style.marginRight = '10px'; // Added margin between text and element
 
-        var challengesAndPredictionsToggleSwitch = document.createElement('label');
-        challengesAndPredictionsToggleSwitch.className = 'switch';
-        var challengesAndPredictionsToggleInput = document.createElement('input');
-        challengesAndPredictionsToggleInput.type = 'checkbox';
-        challengesAndPredictionsToggleInput.checked = challengesAndPredictionsEnabled;
-        challengesAndPredictionsToggleInput.addEventListener('change', toggleChallengesAndPredictionsCSS);
-        var challengesAndPredictionsToggleSpan = document.createElement('span');
-        challengesAndPredictionsToggleSpan.className = 'slider round';
-        challengesAndPredictionsToggleSwitch.appendChild(challengesAndPredictionsToggleInput);
-        challengesAndPredictionsToggleSwitch.appendChild(challengesAndPredictionsToggleSpan);
+        var challengesPredictionsToggleSwitch = document.createElement('label');
+        challengesPredictionsToggleSwitch.className = 'switch';
+        var challengesPredictionsToggleInput = document.createElement('input');
+        challengesPredictionsToggleInput.type = 'checkbox';
+        challengesPredictionsToggleInput.checked = challengesPredictionsEnabled;
+        challengesPredictionsToggleInput.addEventListener('change', toggleChallengesPredictionsCSS);
+        var challengesPredictionsToggleSpan = document.createElement('span');
+        challengesPredictionsToggleSpan.className = 'slider round';
+        challengesPredictionsToggleSwitch.appendChild(challengesPredictionsToggleInput);
+        challengesPredictionsToggleSwitch.appendChild(challengesPredictionsToggleSpan);
 
-        challengesAndPredictionsToggleSwitchContainer.appendChild(challengesAndPredictionsToggleLabel);
-        challengesAndPredictionsToggleSwitchContainer.appendChild(challengesAndPredictionsToggleSwitch);
+        challengesPredictionsToggleSwitchContainer.appendChild(challengesPredictionsToggleLabel);
+        challengesPredictionsToggleSwitchContainer.appendChild(challengesPredictionsToggleSwitch);
 
         var heightContainer = document.createElement('div');
         heightContainer.className = 'row';
@@ -238,11 +246,12 @@
         heightContainer.appendChild(heightLabel);
         heightContainer.appendChild(heightInput);
 
-        settingsWindow.appendChild(toggleSwitchContainer);
-        settingsWindow.appendChild(challengesAndPredictionsToggleSwitchContainer);
+        settingsWindow.appendChild(streamStreakToggleSwitchContainer);
+        settingsWindow.appendChild(challengesPredictionsToggleSwitchContainer);
         settingsWindow.appendChild(heightContainer);
 
         document.body.appendChild(settingsWindow);
+        settingsWindowOpened = true;
     }
 
     // Function to apply the height CSS
@@ -266,12 +275,11 @@
 
     window.addEventListener('load', function() {
         createToggleButton();
-        createChallengesAndPredictionsToggleButton();
-        if (enabled) {
-            applyCSS();
+        if (streamStreakEnabled) {
+            applyStreamStreakCSS();
         }
-        if (challengesAndPredictionsEnabled) {
-            applyChallengesAndPredictionsCSS();
+        if (challengesPredictionsEnabled) {
+            applyChallengesPredictionsCSS();
         }
         applyHeightCSS();
     });
