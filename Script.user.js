@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stream-Streak entfernen
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Entfernt die Viewer-Streak von den Channelpoints
 // @author       Pillowg1rl
 // @match        https://www.twitch.tv/*
