@@ -7,6 +7,8 @@
 // @match        https://www.twitch.tv/*
 // @match        http://www.twitch.tv/*
 // @grant        none
+// @updateURL    https://github.com/Pillowg1rl/Twitch_Settings_Window/raw/main/Script.user.js
+// @downloadURL  https://github.com/Pillowg1rl/Twitch_Settings_Window/raw/main/Script.user.js
 // ==/UserScript==
 
 (function() {
@@ -76,7 +78,9 @@
         button.style.border = 'none'; // Remove border
         button.style.borderRadius = '4px'; // Add border radius
         button.style.cursor = 'pointer'; // Change cursor to pointer
-        button.addEventListener('click', openSettingsWindow);
+        button.addEventListener('click', function() {
+            toggleSettingsWindow();
+        });
         document.body.appendChild(button);
     }
 
@@ -92,11 +96,22 @@
         }
     }
 
+    // Function to open or close the settings window
+    function toggleSettingsWindow() {
+        var settingsWindow = document.getElementById('settingsWindow');
+        if (settingsWindow) {
+            document.body.removeChild(settingsWindow);
+        } else {
+            openSettingsWindow();
+        }
+    }
+
     // Function to open the settings window
     function openSettingsWindow() {
         var settingsWindow = document.createElement('div');
+        settingsWindow.id = 'settingsWindow';
         settingsWindow.style.position = 'fixed';
-        settingsWindow.style.bottom = '20px';
+        settingsWindow.style.bottom = '40px'; // Adjusted bottom position
         settingsWindow.style.right = '20px';
         settingsWindow.style.backgroundColor = '#2e2e2e'; // Dark background color
         settingsWindow.style.padding = '30px'; // Increased padding
