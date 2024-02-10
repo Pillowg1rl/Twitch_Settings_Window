@@ -1,14 +1,15 @@
 // ==UserScript==
-// @name         VNM Twitch Settings
+// @name         VMN Twitch Settings
 // @namespace    http://tampermonkey.net/
 // @version      0.3
-// @description  Settings-Window from VMN
+// @description  Vision Makers Network Twitch Settings Window
 // @author       Pillowg1rl
 // @match        https://www.twitch.tv/*
 // @match        http://www.twitch.tv/*
 // @grant        none
 // @updateURL    https://github.com/Pillowg1rl/Twitch_Settings_Window/raw/main/Script.user.js
 // @downloadURL  https://github.com/Pillowg1rl/Twitch_Settings_Window/raw/main/Script.user.js
+// GPT           https://chat.openai.com/c/0e38a00c-efc9-4f8e-9d64-f2f606d34877
 // ==/UserScript==
 
 (function() {
@@ -79,23 +80,7 @@
         }
     }
 
-    // Function to create and append the toggle button for challenges and predictions
-    function createChallengesAndPredictionsToggleButton() {
-        var button = document.createElement('button');
-        button.textContent = 'Herausforderungen und Vorhersagen entfernen';
-        button.style.position = 'fixed';
-        button.style.bottom = '60px'; // Adjusted bottom position
-        button.style.right = '100px'; // Adjusted right position
-        button.style.zIndex = '9999'; // Ensure the button is above other elements
-        button.style.backgroundColor = '#9147ff'; // Purple background color
-        button.style.color = '#FFFFFF'; // White text color
-        button.style.padding = '10px 20px'; // Padding
-        button.style.border = 'none'; // Remove border
-        button.style.borderRadius = '4px'; // Add border radius
-        button.style.cursor = 'pointer'; // Change cursor to pointer
-        button.addEventListener('click', toggleChallengesAndPredictionsCSS);
-        document.body.appendChild(button);
-    }
+
 
     // Function to update the toggle switch for challenges and predictions appearance
     function updateChallengesAndPredictionsToggleSwitch() {
